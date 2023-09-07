@@ -20,13 +20,13 @@ async def get_all_courses():
 async def update_course(
     id: int,
     new_text: str = "",
-    updated_price: int = 0 
+    price: int = 0 
 ):
     course_query = session.query(Course).filter(Course.id==id)
     course = course_query.first()
     if new_text:
         course.text = new_text
-    course.price = updated_price
+    course.price = price
     session.add(course)
     session.commit()
 

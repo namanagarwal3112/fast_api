@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import declarative_base, sessionmaker
-
+from starlette.applications import Starlette
+from starlette_admin.contrib.sqla import Admin, ModelView
 
 url = URL.create(
     drivername="postgresql",
@@ -27,3 +28,13 @@ class Course(Base):
 
 
 Base.metadata.create_all(engine)
+app = Starlette()  # FastAPI()
+
+# Create admin
+admin = Admin(engine, title="Example: SQLAlchemy")
+
+# Add view
+admin.add_view(ModelView(Course))
+
+# Mount admin to your app
+admin.mount_to(app)
